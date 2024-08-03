@@ -8,8 +8,7 @@ const Hero = () => {
       </nav>
 
       <h1 className="head_text">
-        Summarize Articles with <br className="max-md:hidden" />
-        <span className="orange_gradient">OpenAI GPT-4</span>
+        Summarize Articles with <span className="blue_gradient">AI</span>
       </h1>
       <h2 className="desc">
         Efficiently condenses articles into brief, clear summaries. It uses
