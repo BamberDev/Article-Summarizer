@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { copy, loader, linkIcon, tick } from "../assets";
+import { copy, linkIcon, tick } from "../assets";
 import { useLazyGetSummaryQuery } from "../services/article";
+import Loader from "./Loader";
 
 const Content = () => {
   const [article, setArticle] = useState({
@@ -98,11 +99,7 @@ const Content = () => {
       </div>
       <div className="my-10 max-w-full flex justify-center items-center">
         {isFetching ? (
-          <img
-            src={loader}
-            alt="loader-icon"
-            className="w-20 h-20 object-contain"
-          />
+          <Loader />
         ) : error ? (
           <p className="font-inter font-bold text-center">
             Something went wrong...
