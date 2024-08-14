@@ -2,12 +2,12 @@ import { loader } from "../assets";
 
 const Loader = () => {
   return (
-    <div className="loader">
+    <div className="flex size-full items-center justify-center gap-3 text-lg">
       <img
         src={loader}
         alt="loader"
-        width={40}
-        height={40}
+        width={50}
+        height={50}
         className="animate-spin"
       />
       <p>Loading...</p>
