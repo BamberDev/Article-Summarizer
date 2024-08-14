@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { copy, linkIcon, tick } from "../assets";
 import { useLazyGetSummaryQuery } from "../services/article";
 import Loader from "./Loader";
+import deleteIcon from "./../assets/delete.svg";
 
 const Content = () => {
   const [article, setArticle] = useState({
@@ -47,6 +48,15 @@ const Content = () => {
     return () => clearTimeout(timeout);
   };
 
+  const handleDelete = (index) => {
+    const updatedAllArticles = allArticles.filter((_, i) => i !== index);
+    setAllArticles(updatedAllArticles);
+    localStorage.setItem("articles", JSON.stringify(updatedAllArticles));
+    if (article.url === allArticles[index].url) {
+      setArticle({ url: "", summary: "" });
+    }
+  };
+
   return (
     <section className="mt-16 w-full max-w-xl">
       <div className="flex flex-col w-full gap-2">
@@ -67,25 +77,39 @@ const Content = () => {
               setArticle({ ...article, url: e.target.value });
             }}
             required
-            className="url_input peer"
+            className="url-input peer"
           />
           <button
             type="submit"
-            className="submit_btn peer-focus:border-gray-700
-          peer-focus:text-gray-700"
+            className="submit-btn peer-focus:border-gray-700"
           >
             Submit
           </button>
         </form>
         <div className="flex flex-col gap-1 max-h-60 overflow-y-auto">
           {allArticles.map((item, index) => (
-            <div key={`item-${index}`} className="link_card">
-              <div className="copy_btn" onClick={() => handleCopy(item.url)}>
-                <img
-                  src={copied === item.url ? tick : copy}
-                  alt="copy/tick-icon"
-                  className="w-[20px] h-[20px] object-contain"
-                />
+            <div key={`item-${index}`} className="link-card">
+              <div className="flex gap-2">
+                <button
+                  className="action-btn"
+                  onClick={() => handleCopy(item.url)}
+                >
+                  <img
+                    src={copied === item.url ? tick : copy}
+                    alt="copy/tick-icon"
+                    className="w-[24px] h-[24px] object-contain"
+                  />
+                </button>
+                <button
+                  className="action-btn"
+                  onClick={() => handleDelete(index)}
+                >
+                  <img
+                    src={deleteIcon}
+                    alt="delete-icon"
+                    className="w-[24px] h-[24px] object-contain"
+                  />
+                </button>
               </div>
               <div
                 className="flex-1 font-satoshi text-blue-700 font-medium truncate"
@@ -111,9 +135,9 @@ const Content = () => {
         ) : (
           article.summary && (
             <div className="flex flex-col gap-3">
-              <div className="summary_box text-justify">
+              <div className="rounded-md bg-gray-100 p-4 text-justify">
                 <h2 className="font-satoshi font-bold text-xl text-center mb-4">
-                  Summarized <span className="blue_gradient">Article</span>
+                  Summarized <span className="blue-gradient">Article</span>
                 </h2>
                 <hr className="border-none h-[1px] bg-gray-700 w-3/4 mx-auto" />
                 <p className="font-inter font-medium">{article.summary}</p>
