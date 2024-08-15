@@ -45,7 +45,7 @@
 /* Tailwind Styles */
 
 .url-input {
-  @apply block w-full rounded-md border border-gray-300 bg-gray-100 py-2.5 pl-10 pr-[4.5rem] text-sm shadow-lg font-satoshi font-medium focus:border-black focus:outline-none focus:ring-0;
+  @apply block w-full rounded-md border border-gray-300 bg-gray-100 py-2.5 pl-10 pr-[4.5rem] text-sm shadow-lg font-medium focus:border-black focus:outline-none focus:ring-0;
 }
 
 .submit-btn {

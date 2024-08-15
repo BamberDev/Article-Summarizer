@@ -11,6 +11,7 @@ const Content = () => {
   });
   const [allArticles, setAllArticles] = useState([]);
   const [copied, setCopied] = useState("");
+  const [currentError, setCurrentError] = useState(null);
 
   const [getSummary, { error, isFetching }] = useLazyGetSummaryQuery();
 
@@ -38,7 +39,15 @@ const Content = () => {
       setAllArticles(updatedAllArticles);
 
       localStorage.setItem("articles", JSON.stringify(updatedAllArticles));
+      setCurrentError(null);
+    } else {
+      setCurrentError(error?.data?.error || "Something went wrong");
     }
+  };
+
+  const handleArticleClick = (item) => {
+    setCurrentError(null);
+    setArticle(item);
   };
 
   const handleCopy = (copyUrl) => {
@@ -112,8 +121,8 @@ const Content = () => {
                 </button>
               </div>
               <div
-                className="flex-1 font-satoshi text-blue-700 font-medium truncate"
-                onClick={() => setArticle(item)}
+                className="flex-1 text-blue-700 font-medium truncate"
+                onClick={() => handleArticleClick(item)}
               >
                 <p>{item.url}</p>
               </div>
@@ -124,23 +133,21 @@ const Content = () => {
       <div className="my-10 max-w-full flex justify-center items-center">
         {isFetching ? (
           <Loader />
-        ) : error ? (
-          <p className="font-inter font-bold text-center">
+        ) : currentError ? (
+          <p className="font-bold text-center">
             Something went wrong...
             <br />
-            <span className="font-satoshi font-normal">
-              {error?.data?.error}
-            </span>
+            <span className="font-normal">{error?.data?.error}</span>
           </p>
         ) : (
           article.summary && (
             <div className="flex flex-col gap-3">
               <div className="rounded-md bg-gray-100 p-4 text-justify">
-                <h2 className="font-satoshi font-bold text-xl text-center mb-4">
+                <h2 className="font-bold text-xl text-center mb-4">
                   Summarized <span className="blue-gradient">Article</span>
                 </h2>
-                <hr className="border-none h-[1px] bg-gray-700 w-3/4 mx-auto" />
-                <p className="font-inter font-medium">{article.summary}</p>
+                <hr className="border-none h-[1px] bg-black w-3/4 mx-auto" />
+                <p className="font-medium">{article.summary}</p>
               </div>
             </div>
           )
