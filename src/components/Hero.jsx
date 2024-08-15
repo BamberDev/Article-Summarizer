@@ -1,12 +1,6 @@
-import { logo } from "../assets";
-
 const Hero = () => {
   return (
     <header className="w-full flex justify-center items-center flex-col">
-      <nav className="flex justify-between items-center w-full mb-10 pt-3">
-        <img src={logo} alt="logo" className="w-28 object-contain" />
-      </nav>
-
       <h1 className="mt-5 text-5xl font-extrabold leading-[1.15] text-black sm:text-6xl text-center">
         Summarize Articles with <span className="blue-gradient">AI</span>
       </h1>
