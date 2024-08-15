@@ -3,6 +3,7 @@ import { copy, linkIcon, tick } from "../assets";
 import { useLazyGetSummaryQuery } from "../services/article";
 import Loader from "./Loader";
 import deleteIcon from "./../assets/delete.svg";
+import ActionButton from "./ActionButton";
 
 const Content = () => {
   const [article, setArticle] = useState({
@@ -10,7 +11,7 @@ const Content = () => {
     summary: "",
   });
   const [allArticles, setAllArticles] = useState([]);
-  const [copied, setCopied] = useState("");
+  const [copied, setCopied] = useState({ url: "", summary: "" });
   const [currentError, setCurrentError] = useState(null);
 
   const [getSummary, { error, isFetching }] = useLazyGetSummaryQuery();
@@ -50,11 +51,10 @@ const Content = () => {
     setArticle(item);
   };
 
-  const handleCopy = (copyUrl) => {
-    setCopied(copyUrl);
-    navigator.clipboard.writeText(copyUrl);
-    const timeout = setTimeout(() => setCopied(false), 3000);
-    return () => clearTimeout(timeout);
+  const handleCopy = (type, content) => {
+    setCopied({ ...copied, [type]: content });
+    navigator.clipboard.writeText(content);
+    setTimeout(() => setCopied({ ...copied, [type]: "" }), 3000);
   };
 
   const handleDelete = (index) => {
@@ -99,26 +99,14 @@ const Content = () => {
           {allArticles.map((item, index) => (
             <div key={`item-${index}`} className="link-card">
               <div className="flex gap-2">
-                <button
-                  className="action-btn"
-                  onClick={() => handleCopy(item.url)}
-                >
-                  <img
-                    src={copied === item.url ? tick : copy}
-                    alt="copy/tick-icon"
-                    className="w-[24px] h-[24px] object-contain"
-                  />
-                </button>
-                <button
-                  className="action-btn"
+                <ActionButton
+                  onClick={() => handleCopy("url", item.url)}
+                  icon={copied.url === item.url ? tick : copy}
+                />
+                <ActionButton
                   onClick={() => handleDelete(index)}
-                >
-                  <img
-                    src={deleteIcon}
-                    alt="delete-icon"
-                    className="w-[24px] h-[24px] object-contain"
-                  />
-                </button>
+                  icon={deleteIcon}
+                />
               </div>
               <div
                 className="flex-1 text-blue-700 font-medium truncate"
@@ -137,17 +125,23 @@ const Content = () => {
           <p className="font-bold text-center">
             Something went wrong...
             <br />
-            <span className="font-normal">{error?.data?.error}</span>
+            <span className="font-normal">{currentError}</span>
           </p>
         ) : (
           article.summary && (
             <div className="flex flex-col gap-3">
-              <div className="rounded-md bg-gray-100 p-4 text-justify">
-                <h2 className="font-bold text-xl text-center mb-4">
+              <div className="rounded-md bg-gray-100 p-3 text-justify">
+                <h2 className="font-bold text-xl text-center">
                   Summarized <span className="blue-gradient">Article</span>
                 </h2>
-                <hr className="border-none h-[1px] bg-black w-3/4 mx-auto" />
+                <hr className="border-none h-[1px] bg-black w-3/4 mx-auto my-3" />
                 <p className="font-medium">{article.summary}</p>
+                <div className="flex justify-center items-center mt-3">
+                  <ActionButton
+                    onClick={() => handleCopy("summary", article.summary)}
+                    icon={copied.summary === article.summary ? tick : copy}
+                  />
+                </div>
               </div>
             </div>
           )
