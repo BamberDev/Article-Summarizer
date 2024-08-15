@@ -33,16 +33,17 @@ const Content = () => {
 
     if (data?.summary) {
       const newArticle = { ...article, summary: data.summary };
-
       const updatedAllArticles = [newArticle, ...allArticles];
 
       setArticle(newArticle);
       setAllArticles(updatedAllArticles);
-
       localStorage.setItem("articles", JSON.stringify(updatedAllArticles));
       setCurrentError(null);
     } else {
-      setCurrentError(error?.data?.error || "Something went wrong");
+      setCurrentError(
+        error?.data?.error ||
+          "An error occurred: Make sure you are trying to summarize a news article or another page with clearly defined blocks of text."
+      );
     }
   };
 
