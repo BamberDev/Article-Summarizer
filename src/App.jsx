@@ -1,5 +1,4 @@
 import Content from "./components/Content";
-import Footer from "./components/Footer";
 import Hero from "./components/Hero";
 
 const App = () => {
@@ -12,7 +11,6 @@ const App = () => {
         <Hero />
         <Content />
       </div>
-      <Footer />
     </main>
   );
 };
